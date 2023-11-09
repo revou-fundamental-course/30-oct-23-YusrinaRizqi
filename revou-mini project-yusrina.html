@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kalkulator BMI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            margin: 10px;
+        }
+
+        input {
+            padding: 5px;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00506b;
+        }
+
+        #hasil {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        #download {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kalkulator BMI</h1>
+    <p>Masukkan jenis kelamin: 
+        <select id="jenisKelamin">
+            <option value="pria">Pria</option>
+            <option value="wanita">Wanita</option>
+        </select>
+    </p>
+    <p>Masukkan berat (kg): <input type="text" id="berat"></p>
+    <p>Masukkan tinggi (cm): <input type="text" id="tinggi"></p>
+    <button onclick="hitungBMI()">Hitung BMI</button>
+    <p id="hasil"></p>
+    <a id="download" download="hasil_bmi.txt">
+        <button>Download Hasil BMI</button>
+    </a>
+</body>
+<script>
+    function hitungBMI() {
+        var jenisKelamin = document.getElementById("jenisKelamin").value;
+        var berat = parseFloat(document.getElementById("berat").value);
+        var tinggi = parseFloat(document.getElementById("tinggi").value) / 100;
+        var bmi = berat / (tinggi * tinggi);
+
+        // Menampilkan hasil BMI
+        var hasilText = "BMI Anda adalah: " + bmi.toFixed(2);
+
+        // Menampilkan kategori BMI berdasarkan jenis kelamin
+        if (jenisKelamin === "pria") {
+            if (bmi < 18.5) {
+                hasilText += " (Kurang berat badan untuk pria)";
+            } else if (bmi < 24.9) {
+                hasilText += " (Normal untuk pria)";
+            } else if (bmi < 29.9) {
+                hasilText += " (Kelebihan berat badan untuk pria)";
+            } else {
+                hasilText += " (Obesitas untuk pria)";
+            }
+        } else {
+            // Jenis kelamin wanita
+            if (bmi < 18.5) {
+                hasilText += " (Kurang berat badan untuk wanita)";
+            } else if (bmi < 24.9) {
+                hasilText += " (Normal untuk wanita)";
+            } else if (bmi < 29.9) {
+                hasilText += " (Kelebihan berat badan untuk wanita)";
+            } else {
+                hasilText += " (Obesitas untuk wanita)";
+            }
+        }
+
+        document.getElementById("hasil").innerHTML = hasilText;
+
+        // Menambahkan keterangan detail ke dalam file yang diunduh
+        var detailKeterangan = "Keterangan Detail:\n";
+        detailKeterangan += "Jenis Kelamin: " + jenisKelamin + "\n";
+        detailKeterangan += "Berat: " + berat + " kg\n";
+        detailKeterangan += "Tinggi: " + tinggi * 100 + " cm";
+
+        hasilText += "\n" + detailKeterangan;
+
+        // Menampilkan tombol download
+        var downloadButton = document.getElementById("download");
+        downloadButton.style.display = "block";
+        downloadButton.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(hasilText));
+    }
+</script>
+</html>
